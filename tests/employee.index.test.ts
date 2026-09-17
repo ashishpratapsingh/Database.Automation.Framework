@@ -18,7 +18,7 @@ describe("Check employee table index (structural existence)", () =>{
         await teardownTestDatabase();
     });
 
-    test("Should have existence of index for employee table on email field", async ()=>{
+    test("Should have existence of index for employee table on email field.", async ()=>{
         const indexCount = await db.raw(`SELECT indexname FROM pg_indexes 
         WHERE tablename = 'employee' AND indexname = 'idx_employee_email';`);
         expect(indexCount.rows.length).toBe(1);
