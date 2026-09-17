@@ -1,0 +1,27 @@
+{
+  "name": "database.automation.framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "knex": "^3.3.0",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@testcontainers/postgresql": "^12.1.0",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.5.1",
+    "jest-html-reporters": "^3.1.7",
+    "jest-junit": "^17.0.0",
+    "ts-jest": "^29.4.12",
+    "typescript": "^5.9.3"
+  }
+}

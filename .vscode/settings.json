@@ -1,0 +1,11 @@
+{
+    "testing.automaticallyOpenTestResults": "openOnTestFailure",
+    "jest.outputConfig": {
+        "revealOn": "run",
+        "revealWithFocus": "none",
+        "clearOnRun": "none"
+    },
+    "jest.runMode": {
+        "type": "on-demand"
+    }
+}
