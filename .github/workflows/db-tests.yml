@@ -38,6 +38,10 @@ jobs:
         env:
           CI: true
 
+      # Rename/Copy report.html to index.html for GitHub Pages root routing
+      - name: Prepare HTML Report for GitHub Pages
+        run: cp test-results/html/report.html test-results/html/index.html
+        
       # 1. Upload report folder as a GitHub Pages artifact
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
