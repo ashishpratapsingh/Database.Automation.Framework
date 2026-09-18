@@ -2,9 +2,15 @@ name: Database Integration Tests
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]
+
+# Required permissions to publish to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -32,10 +38,13 @@ jobs:
         env:
           CI: true
 
-      - name: Upload Test Execution Reports
-        uses: actions/upload-artifact@v4
-        if: always()
+      # 1. Upload report folder as a GitHub Pages artifact
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: database-test-reports-node-${{ matrix.node-version }}
-          path: test-results/
-          retention-days: 30
+          path: test-results/html/
+
+      # 2. Deploy the uploaded artifact to your live GitHub Pages URL
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
