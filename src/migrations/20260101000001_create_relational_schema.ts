@@ -2,7 +2,7 @@ import { Knex } from "knex";
 
 // This will be called ny knex when dbInstance.migrate.latest() called by db-container.ts
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable("users", (table) => {
+  await knex.schema.createTable("customers", (table) => {
     table.increments("id").primary();
     table.string("email").notNullable().unique();
     table.string("name");
@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable("orders", (table) => {
     table.increments("id").primary();
-    table.integer("user_id").unsigned().references("id").inTable("users").onDelete("CASCADE");
+    table.integer("customer_id").unsigned().references("id").inTable("customers").onDelete("CASCADE");
     table.decimal("total_amount", 10, 2).notNullable();
     table.string("status").defaultTo("pending");
     table.timestamps(true, true);
@@ -41,7 +41,7 @@ export async function down(knex: Promise<Knex>): Promise<void> {
   // If down is called
   const db = await knex;
   await db.schema.dropTableIfExists("orders");
-  await db.schema.dropTableIfExists("users");
+  await db.schema.dropTableIfExists("customers");
   await db.schema.dropTableIfExists("department");
   await db.schema.dropTableIfExists("employee");
 }

@@ -8,8 +8,10 @@ export class PostgresStrategy implements IDatabaseStrategy {
   private container?: StartedPostgreSqlContainer;
 
   async start() {
-    this.container = await new PostgreSqlContainer("postgres:15-alpine")
-    .withName("Postgres-container")    
+    this.container = await new PostgreSqlContainer("postgres:18-alpine")
+    .withEnvironment({
+      POSTGRES_USER: "postgres"
+    })        
     .start();
   }
 
@@ -29,12 +31,12 @@ export class PostgresStrategy implements IDatabaseStrategy {
     else
     {      
       config = {     
-      client: "pg",      
-      connection: this.container.getConnectionUri(),
-      migrations: {
-        directory: path.resolve(__dirname, "../migrations"),
-        extension: "ts",
-      }
+        client: "pg",      
+        connection: this.container.getConnectionUri(),        
+        migrations: {
+          directory: path.resolve(__dirname, "../migrations"),        
+          extension: "ts",
+        }
       };   
     }
 

@@ -5,9 +5,15 @@ import path from "path";
 const knexConfig: { [key: string]: Knex.Config } = {
   development: {
     client: "pg",
-    connection: process.env.DATABASE_URL || "postgres://postgres:postgres@localhost:5432/test_db",
+    connection: {
+      host: process.env.DB_HOST || "localhost",
+      port: Number(process.env.DB_PORT) || 5432,
+      user: process.env.DB_USER || "postgres",
+      password: process.env.DB_PASSWORD || "postgres",
+      database: process.env.DB_NAME || "test_db",      
+    },
     migrations: {
-      directory: path.resolve(__dirname, "src/migrations"),
+      directory: path.resolve(__dirname, "src/migrations"),      
       extension: "ts",
     },
     seeds: {

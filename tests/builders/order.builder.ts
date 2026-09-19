@@ -1,16 +1,16 @@
 import { Knex } from "knex";
-import { createTestUser } from "./user.builder";
+import { createTestCustomer } from "./customer.builder";
 import { faker } from "@faker-js/faker";
 
-export async function createTestOrder(db: Knex, userId?: number, overrides = {}) {
-  let ownerId = userId;
+export async function createTestOrder(db: Knex, customerId?: number, overrides = {}) {
+  let ownerId = customerId;
   if (!ownerId) {
-    const user = await createTestUser(db);
-    ownerId = user.id;
+    const customer = await createTestCustomer(db);
+    ownerId = customer.id;
   }
 
   const defaultOrderData = {
-    user_id: ownerId,
+    customer_id: ownerId,
     total_amount: parseFloat(faker.finance.amount(10, 500, 2)),
     status: "pending",
     ...overrides,

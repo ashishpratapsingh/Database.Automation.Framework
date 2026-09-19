@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 import { getTestDatabase, teardownTestDatabase } from "../tests/db-container";
-import { createTestUser } from "./builders/user.builder";
+import { createTestCustomer } from "./builders/customer.builder";
 import { createTestOrder } from "./builders/order.builder";
 import { expectDatabaseError } from "./helpers/assert-db";
 
@@ -20,39 +20,39 @@ describe("Order & User Relationship Tests", () => {
   afterEach(async () => {
     // Clear out data after every test to guarantee absolute isolation and prevent pollution
     await db("orders").del();
-    await db("users").del();
+    await db("customers").del();
   });
 
-  test("should successfully query orders belonging to a specific admin user", async () => {
-    // 1. Generate an admin user on the fly using the builder
-    const adminUser = await createTestUser(db, { 
+  test("should successfully query orders belonging to a specific admin customer", async () => {
+    // 1. Generate an admin customer on the fly using the builder
+    const adminCustomer = await createTestCustomer(db, { 
       role: "admin", 
       name: "Super Admin" 
     });
 
-    // 2. Generate an order tied specifically to that admin user
-    const order = await createTestOrder(db, adminUser.id, { 
+    // 2. Generate an order tied specifically to that admin customer
+    const order = await createTestOrder(db, adminCustomer.id, { 
       status: "completed" 
     });
 
     // 3. Assert relationship and order properties
-    expect(order.user_id).toBe(adminUser.id);
+    expect(order.customer_id).toBe(adminCustomer.id);
     expect(order.status).toBe("completed");
 
-    // 4. Verify user persistence via database query
-    const fetchedUser = await db("users").where({ id: adminUser.id }).first();
-    expect(fetchedUser).toBeDefined();
-    expect(fetchedUser.name).toBe("Super Admin");
-    expect(fetchedUser.role).toBe("admin");
+    // 4. Verify customer persistence via database query
+    const fetchedCustomer = await db("customers").where({ id: adminCustomer.id }).first();
+    expect(fetchedCustomer).toBeDefined();
+    expect(fetchedCustomer.name).toBe("Super Admin");
+    expect(fetchedCustomer.role).toBe("admin");
   });
 
   // <-- 2. Add your negative test case using expectDatabaseError
-  test("should fail to create an order for a user ID that does not exist", async () => {
-    const nonExistentUserId = 99999;
+  test("should fail to create an order for a customer ID that does not exist", async () => {
+    const nonExistentCustomerId = 99999;
 
     await expectDatabaseError(async () => {
-      // This violates the foreign key constraint between orders and users
-      await createTestOrder(db, nonExistentUserId, { status: "pending" });
+      // This violates the foreign key constraint between orders and customers
+      await createTestOrder(db, nonExistentCustomerId, { status: "pending" });
     }, "23503"); // '23503' is the standard PostgreSQL error code for foreign_key_violation
   });
   

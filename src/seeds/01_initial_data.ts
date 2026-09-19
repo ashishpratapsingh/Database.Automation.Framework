@@ -3,10 +3,10 @@ import { Knex } from "knex";
 export async function seed(knex: Knex): Promise<void> {
   // Clear tables in reverse dependency order to avoid foreign key violations
   await knex("orders").del();
-  await knex("users").del();
+  await knex("customers").del();
 
   // Insert baseline parent record and capture the generated ID
-  const [insertedUser] = await knex("users")
+  const [insertedUser] = await knex("customers")
     .insert({ email: "architect@example.com" })
     .returning("id");
 
